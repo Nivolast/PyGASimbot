@@ -258,7 +258,7 @@ def after_simulation(simbot: Simbot):
     Logger.info(f"Generation {simbot.simulation_count}: Best Fitness = {best_fitness}")
 
     # Write the best rule to file
-    write_rule(sorted_robots[0], f"PyGASimbot 2021/PyGASimbot/Rule_log/best_gen{simbot.simulation_count}.csv")
+    write_rule(sorted_robots[0], f"best_gen{simbot.simulation_count}.csv")
 
 if __name__ == '__main__':
     app = PySimbotApp(
@@ -269,7 +269,7 @@ if __name__ == '__main__':
         max_tick=2000,
         interval=1/100.0,
         food_move_after_eat=False,
-        customfn_before_simulation=before_simulation, 
+        customfn_before_simulation=before_simulation,
         customfn_after_simulation=after_simulation
     )
     app.run()
