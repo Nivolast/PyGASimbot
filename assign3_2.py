@@ -177,11 +177,11 @@ class StupidRobot(Robot):
         else: return 0.0
 
 
-    def calculate_fitness(self):
+    def calculate_fitness(self, distance, collision):
         # Normalize and weight different factors
         normalized_eat = self.eat_count / 2  # Assuming eat count is around 2
-        normalized_collision = 1 - (self.collision_count / 100)  # Penalize collisions
-        normalized_distance = 1 - (self.distance_to_food / 1000)  # Assuming max distance is 1000
+        normalized_collision = 1 - (collision / 100)  # Penalize collisions
+        normalized_distance = 1 - (distance / 1000)  # Assuming max distance is 1000
 
         self.fitness = (
             0.5 * normalized_eat +
@@ -236,7 +236,11 @@ def after_simulation(simbot: Simbot):
 
     # Calculate fitness for each robot
     for robot in simbot.robots:
-        robot.calculate_fitness()
+        food_pos = simbot.objectives[0].pos
+        robot_pos = robot.pos
+        distance = Util.distance(food_pos, robot_pos)
+        collision = robot.collision_count
+        robot.calculate_fitness(distance, collision)
 
     # Sort robots by fitness
     sorted_robots = sorted(simbot.robots, key=lambda r: r.fitness, reverse=True)
